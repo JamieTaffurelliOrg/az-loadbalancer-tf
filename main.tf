@@ -56,7 +56,7 @@ resource "azurerm_lb_rule" "rule" {
   backend_port                   = each.value["backend_port"]
   frontend_ip_configuration_name = each.value["frontend_ip_configuration_name"]
   backend_address_pool_ids       = [for k in setintersection(local.deployed_backend_address_pools, each.value["backend_address_pool_references"]) : azurerm_lb_backend_address_pool.backend_address_pool[(k)].id]
-  probe_id                       = [for k in setintersection(local.deployed_probes, each.value["probe_references"]) : azurerm_lb_probe.probe[(k)].id]
+  probe_id                       = [for k in setintersection(local.deployed_probes, each.value["probe_reference"]) : azurerm_lb_probe.probe[(k)].id]
   enable_floating_ip             = each.value["enable_floating_ip"]
   idle_timeout_in_minutes        = each.value["idle_timeout_in_minutes"]
   load_distribution              = each.value["load_distribution"]
