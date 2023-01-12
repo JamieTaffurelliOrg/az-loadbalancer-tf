@@ -28,7 +28,7 @@ resource "azurerm_lb_backend_address_pool" "backend_address_pool" {
 }
 
 resource "azurerm_lb_backend_address_pool_address" "backend_address_pool_address" {
-  for_each                = { for k in var.backend_address_pool_addresses : k => k.name if k != null }
+  for_each                = { for k in var.backend_address_pool_addresses : k.name => k if k != null }
   name                    = each.key
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_address_pool[(each.value["backend_address_pool_reference"])].id
   virtual_network_id      = data.azurerm_virtual_network.virtual_networks[(each.value["virtual_network_reference"])].id
@@ -36,7 +36,7 @@ resource "azurerm_lb_backend_address_pool_address" "backend_address_pool_address
 }
 
 resource "azurerm_lb_probe" "probe" {
-  for_each            = { for k in var.probes : k => k.name if k != null }
+  for_each            = { for k in var.probes : k.name => k if k != null }
   loadbalancer_id     = azurerm_lb.load_balancer.id
   name                = each.key
   port                = each.value["port"]
@@ -48,7 +48,7 @@ resource "azurerm_lb_probe" "probe" {
 }
 
 resource "azurerm_lb_rule" "rule" {
-  for_each                       = { for k in var.rules : k => k.name if k != null }
+  for_each                       = { for k in var.rules : k.name => k if k != null }
   loadbalancer_id                = azurerm_lb.load_balancer.id
   name                           = each.key
   protocol                       = each.value["protocol"]
