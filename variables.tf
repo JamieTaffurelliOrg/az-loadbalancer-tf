@@ -58,7 +58,7 @@ variable "backend_address_pool_addresses" {
       name                           = string
       backend_address_pool_reference = string
       virtual_network_reference      = string
-      ip_address                     = string
+      private_ip_address             = string
     }
   ))
   default     = []
