@@ -90,7 +90,7 @@ variable "rules" {
       backend_port                    = number
       frontend_ip_configuration_name  = string
       backend_address_pool_references = list(string)
-      probe_references                = list(string)
+      probe_reference                 = string
       enable_floating_ip              = optional(bool, false)
       idle_timeout_in_minutes         = optional(number, 4)
       load_distribution               = optional(string, "None")
