@@ -93,7 +93,7 @@ variable "rules" {
       probe_reference                 = string
       enable_floating_ip              = optional(bool, false)
       idle_timeout_in_minutes         = optional(number, 4)
-      load_distribution               = optional(string, "None")
+      load_distribution               = optional(string, "Default")
       enable_tcp_reset                = optional(bool, false)
     }
   ))
