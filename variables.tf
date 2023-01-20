@@ -100,6 +100,29 @@ variable "rules" {
   default     = []
   description = "Rules to deploy to Load Balancer"
 }
+
+variable "private_link_services" {
+  type = list(object(
+    {
+      name                                 = string
+      auto_approval_subscription_ids       = optional(list(string))
+      visibility_subscription_ids          = optional(list(string))
+      frontend_ip_configuration_references = list(string)
+      enable_proxy_protocol                = optional(bool, false)
+      fqdns                                = optional(list(string))
+      nat_ip_configurations = list(object({
+        name                       = string
+        private_ip_address         = string
+        private_ip_address_version = optional(string, "IPv4")
+        subnet_reference           = string
+        primary                    = bool
+      }))
+    }
+  ))
+  default     = []
+  description = "Private link services to NAT to load balancer front ends"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Tags to apply"

@@ -62,3 +62,29 @@ resource "azurerm_lb_rule" "rule" {
   load_distribution              = each.value["load_distribution"]
   enable_tcp_reset               = each.value["enable_tcp_reset"]
 }
+
+resource "azurerm_private_link_service" "private_link_service" {
+  for_each                                    = { for k in var.private_link_services : k.name => k if k != null }
+  name                                        = each.key
+  resource_group_name                         = var.resource_group_name
+  location                                    = var.location
+  auto_approval_subscription_ids              = each.value["auto_approval_subscription_ids"]
+  visibility_subscription_ids                 = each.value["visibility_subscription_ids"]
+  load_balancer_frontend_ip_configuration_ids = [for k in setintersection(local.deployed_frontend_ip_configurations, each.value["frontend_ip_configuration_references"]) : azurerm_lb.load_balancer.frontend_ip_configuration[index(azurerm_lb.load_balancer.frontend_ip_configuration[*].name, k)].id]
+  enable_proxy_protocol                       = each.value["enable_proxy_protocol"]
+  fqdns                                       = each.value["fqdns"]
+
+  dynamic "nat_ip_configuration" {
+    for_each = { for k in each.value["nat_ip_configurations"] : k.name => k }
+
+    content {
+      name                       = nat_ip_configuration.value["name"]
+      private_ip_address         = nat_ip_configuration.value["private_ip_address"]
+      private_ip_address_version = nat_ip_configuration.value["private_ip_address_version"]
+      subnet_id                  = data.azurerm_subnet.subnets[(nat_ip_configuration.value["subnet_reference"])].id
+      primary                    = nat_ip_configuration.value["primary"]
+    }
+  }
+
+  tags = var.tags
+}
