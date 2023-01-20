@@ -101,6 +101,16 @@ variable "rules" {
   description = "Rules to deploy to Load Balancer"
 }
 
+variable "log_analytics_workspace_name" {
+  type        = string
+  description = "Name of Log Analytics Workspace to send diagnostics"
+}
+
+variable "log_analytics_workspace_resource_group_name" {
+  type        = string
+  description = "Resource Group of Log Analytics Workspace to send diagnostics"
+}
+
 variable "private_link_services" {
   type = list(object(
     {
