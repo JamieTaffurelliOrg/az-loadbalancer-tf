@@ -104,13 +104,12 @@ variable "rules" {
 variable "private_link_services" {
   type = list(object(
     {
-      name                                        = string
-      auto_approval_subscription_ids              = optional(list(string))
-      visibility_subscription_ids                 = optional(list(string))
-      load_balancer_frontend_ip_configuration_ids = number
-      frontend_ip_configuration_references        = list(string)
-      enable_proxy_protocol                       = optional(bool, false)
-      fqdns                                       = optional(list(string))
+      name                                 = string
+      auto_approval_subscription_ids       = optional(list(string))
+      visibility_subscription_ids          = optional(list(string))
+      frontend_ip_configuration_references = list(string)
+      enable_proxy_protocol                = optional(bool, false)
+      fqdns                                = optional(list(string))
       nat_ip_configurations = list(object({
         name                       = string
         private_ip_address         = string
