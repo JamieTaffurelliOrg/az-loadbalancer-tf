@@ -108,7 +108,7 @@ variable "private_link_services" {
       auto_approval_subscription_ids       = optional(list(string))
       visibility_subscription_ids          = optional(list(string))
       frontend_ip_configuration_references = list(string)
-      enable_proxy_protocol                = optional(bool, false)
+      enable_proxy_protocol                = optional(bool, true)
       fqdns                                = optional(list(string))
       nat_ip_configurations = list(object({
         name                       = string
