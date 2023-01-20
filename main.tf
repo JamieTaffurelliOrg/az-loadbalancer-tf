@@ -63,6 +63,22 @@ resource "azurerm_lb_rule" "rule" {
   enable_tcp_reset               = each.value["enable_tcp_reset"]
 }
 
+resource "azurerm_monitor_diagnostic_setting" "key_vault_diagnostics" {
+  name                       = "${var.log_analytics_workspace_name}-security-logging"
+  target_resource_id         = azurerm_lb.load_balancer.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.logs.id
+
+  metric {
+    category = "AllMetrics"
+    enabled  = true
+
+    retention_policy {
+      enabled = true
+      days    = 365
+    }
+  }
+}
+
 resource "azurerm_private_link_service" "private_link_service" {
   for_each                                    = { for k in var.private_link_services : k.name => k if k != null }
   name                                        = each.key
