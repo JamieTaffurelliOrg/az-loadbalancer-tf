@@ -71,11 +71,6 @@ resource "azurerm_monitor_diagnostic_setting" "key_vault_diagnostics" {
   metric {
     category = "AllMetrics"
     enabled  = true
-
-    retention_policy {
-      enabled = true
-      days    = 365
-    }
   }
 }
 
